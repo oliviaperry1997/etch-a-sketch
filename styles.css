@@ -1,0 +1,32 @@
+.gridContainer {
+    height: 80vh;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    aspect-ratio: 1/1;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rowDiv {
+    display: flex;
+    flex: 1;
+    box-sizing: border-box;
+    border: solid black 1px;
+}
+
+.gridDiv, .hover {
+    flex: 1;
+    box-sizing: border-box;
+    border-left: solid black 1px;
+    border-right: solid black 1px;
+}
+
+.hover {
+    background-color: black;
+}
+
+#createNewGrid {
+    margin-left: auto;
+    margin-right: auto;
+}
