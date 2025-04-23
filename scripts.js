@@ -11,7 +11,7 @@ function createDivs(x,y) {
             gridDiv.className = 'gridDiv';
             rowDiv.appendChild(gridDiv);
             gridDiv.addEventListener('mouseenter',() => {
-                gridDiv.className = 'hover';
+                gridDiv.style.backgroundColor = `rgb(${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)})`;
             });
         }
     }
