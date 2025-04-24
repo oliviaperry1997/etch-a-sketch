@@ -22,6 +22,11 @@
     border-right: solid black 1px;
 }
 
+.gridContainer.noBorder,
+.gridContainer.noBorder * {
+    border: none !important;
+}
+
 .hover {
     background-color: black;
 }

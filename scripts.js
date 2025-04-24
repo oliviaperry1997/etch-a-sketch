@@ -1,40 +1,43 @@
 const gridContainer = document.querySelector('#gridContainer');
 
 //function to create a 16x16 grid of divs
-function createDivs(x,y) {
+function createDivs(x) {
     for (i=0; i<x; i++) {
         const rowDiv = document.createElement('div');
         rowDiv.className = 'rowDiv'
         gridContainer.appendChild(rowDiv);
-        for (j=0; j<y; j++) {
+        for (j=0; j<x; j++) {
             const gridDiv = document.createElement('div');
             gridDiv.className = 'gridDiv';
             rowDiv.appendChild(gridDiv);
             gridDiv.style.backgroundColor = 'rgba(255,255,255,0)'
             gridDiv.addEventListener('mouseenter',() => {
                 const currentColor = window.getComputedStyle(gridDiv).backgroundColor;
-                console.log("Current color:", currentColor);
-                const rgbaMatch = currentColor.match(/rgba?\(((25[0-5]|2[0-4]\d|1\d{1,2}|\d\d?)\s*,\s*?){2}(25[0-5]|2[0-4]\d|1\d{1,2}|\d\d?)\s*,?\s*([01]\.?\d*?)?\)/);
+                if (currentColor.startsWith('rgb(') && !currentColor.includes('rgba(')) {
+                    // Already at full opacity, just change the color
+                    gridDiv.style.backgroundColor = 
+                        `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+                    return;
+                }
+                const rgbaMatch = currentColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([01]?\.\d+))?\)/);
                 let alpha = 0;
                 if (rgbaMatch) {
-                    alpha = rgbaMatch ? parseFloat(rgbaMatch[4]) : 0;
-                    console.log(`Extracted alpha: ${alpha}`);
-                    gridDiv.style.backgroundColor =
-                    `rgba(${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)},${alpha})`;
-                } else {
-                    console.error("No match found for current color:", currentColor);
+                    alpha = rgbaMatch[4] ? parseFloat(rgbaMatch[4]) : 1;
+                }
+                if (alpha >= 1) {
+                    gridDiv.style.backgroundColor = 
+                        `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+                    return;
                 }
                 alpha = Math.min(alpha + 0.1, 1);
-                console.log(`New alpha: ${alpha}`);
-
-                gridDiv.style.backgroundColor =
-                `rgba(${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)},${Math.floor(Math.random()*256)},${alpha})`;
+                gridDiv.style.backgroundColor = 
+                    `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${alpha})`;
             });
         }
     }
 }
 
-createDivs(16,16);
+createDivs(16);
 
 const createNewGrid = document.querySelector('#createNewGrid');
 createNewGrid.addEventListener('click', () => {
@@ -43,6 +46,12 @@ createNewGrid.addEventListener('click', () => {
         alert("Don't do that.")
     } else {
         gridContainer.replaceChildren();
-        createDivs(gridSize,gridSize);
+        createDivs(gridSize);
     }
+});
+
+const toggleBorders = document.querySelector('#toggleBorders');
+
+toggleBorders.addEventListener('click', () => {
+    gridContainer.classList.toggle("noBorder");
 });
